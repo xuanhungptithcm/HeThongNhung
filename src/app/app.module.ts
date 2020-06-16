@@ -31,7 +31,7 @@ import { TemperatureDraggerComponent } from "./components/temperature-dragger/te
 import { RoundPipe } from "./pipes/round.pipe";
 
 const config: SocketIoConfig = {
-  url: "http://192.168.43.224:7050",
+  url: "http://192.168.1.7:7050",
   options: {},
 };
 

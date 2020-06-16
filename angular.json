@@ -27,7 +27,8 @@
             "styles": [
               "src/styles.scss",
               "node_modules/@nebular/theme/styles/prebuilt/dark.css",
-              "node_modules/@nebular/theme/styles/prebuilt/cosmic.css"
+              "node_modules/@nebular/theme/styles/prebuilt/cosmic.css",
+              "node_modules/@nebular/theme/styles/prebuilt/corporate.css"
             ],
             "scripts": []
           },

@@ -1,4 +1,4 @@
-import { takeWhile } from "rxjs/operators";
+import { takeWhile, delay } from "rxjs/operators";
 import { LocationStrategy, Location } from "@angular/common";
 import { SocketService } from "./socket.service";
 import { Component, HostListener, Input, OnInit } from "@angular/core";
@@ -290,39 +290,49 @@ export class AppComponent implements OnInit {
       console.log(data);
       this.temperature = data;
     });
-    // this.socket.getMessage("sendInfo").subscribe((data) => {
-    //   console.log(123213213131231, data);
-    //   this.temperature = !!data["speed"] ? data["speed"] : 0;
-    //   this.humidity = !!data["lightLevel"] ? data["lightLevel"] : 0;
-    //   if (data["mode"] === 0) {
-    //     this.toggleFormControl.setValue(false);
-    //     this.modeAuto = false;
-    //   } else {
-    //     this.toggleFormControl.setValue(true);
-    //     this.modeAuto = true;
-    //   }
-    // });
+    let x = 0;
     setTimeout(() => {
+      this.themeService.changeTheme("dark");
+      const start = Date.now();
       this.modeAuto = true;
       clearInterval(this.clearStart);
       this.clearStart = setInterval(() => {
-        this.temperature += 10;
-        this.humidity += 10;
+        this.temperature += 20.48;
+        this.humidity += 20.48;
         if (this.temperature >= 1024) {
           clearInterval(this.clearStart);
-          this.clearStart = setInterval(() => {
-            this.temperature -= 10;
-            this.humidity -= 10;
+          this.themeService.changeTheme("corporate");
 
+          this.clearStart = setInterval(() => {
+            this.temperature -= 20.48;
+            this.humidity -= 20.48;
             if (this.temperature <= 0) {
               clearInterval(this.clearStart);
               this.modeAuto = false;
               this.temperature = 0;
               this.humidity = 0;
+              this.themeService.changeTheme("cosmic");
+              console.log(Date.now() - start);
+              console.log("end");
             }
-          }, 5);
+          }, 1);
         }
-      }, 5);
+      }, 1);
     }, 1000);
+    this.socket
+      .getMessage("sendInfo")
+      .pipe(delay(3000))
+      .subscribe((data) => {
+        console.log(123213213131231, data);
+        this.temperature = !!data["speed"] ? data["speed"] : 0;
+        this.humidity = !!data["lighLevel"] ? data["lighLevel"] : 0;
+        if (data["mode"] === 0) {
+          this.toggleFormControl.setValue(false);
+          this.modeAuto = false;
+        } else {
+          this.toggleFormControl.setValue(true);
+          this.modeAuto = true;
+        }
+      });
   }
 }
