@@ -16,7 +16,7 @@ export class TemperatureHumidityService extends TemperatureHumidityData {
   };
 
   private humidityDate: Temperature = {
-    value: 0,
+    value: 800,
     min: 0,
     max: 1024,
   };

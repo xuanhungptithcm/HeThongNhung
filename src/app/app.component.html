@@ -3,13 +3,22 @@
     <nb-card>
       <nb-card-header>
         <div class="auto__speed">
-          <nb-toggle (checkedChange)="changeMode($event)" status="primary"
+          <nb-toggle
+            [formControl]="toggleFormControl"
+            (checkedChange)="changeMode($event)"
+            status="primary"
             >Auto speed</nb-toggle
           >
         </div>
       </nb-card-header>
-      <nb-card-body style="position: relative;">
-        <div [ngClass]="{ disabled: modeAuto }"></div>
+      <nb-card-body
+        nbSpinnerSize="giant"
+        [nbSpinner]="modeAuto"
+        nbSpinnerStatus="info"
+        nbSpinnerMessage="Đang ở chế độ dò line"
+        style="position: relative;"
+      >
+        <div></div>
         <div class="form">
           <label for="speed">Speed card</label>
           <div>
@@ -40,11 +49,11 @@
           class="row"
           style="display: flex; justify-content: space-between; margin: 0 2rem;"
         >
-          <div class="" style="margin-bottom: 2rem;">
+          <div class="control__button" style="margin-bottom: 2rem;">
             <div class="control">
               <div class="button1">
                 <button
-                  [status]="mode__Speed === 1 ? 'success' : 'primary'"
+                  [status]="mode__Speed === 1 ? 'success' : 'info'"
                   style="margin-left: 3.3rem;"
                   nbButton
                   (mousedown)="sendRequest(1)"
@@ -57,14 +66,14 @@
                 <button
                   style="margin-right: 3rem;"
                   nbButton
-                  [status]="mode__Speed === 3 ? 'success' : 'primary'"
+                  [status]="mode__Speed === 3 ? 'success' : 'info'"
                   (mousedown)="sendRequest(3)"
                   (mouseup)="clearRequest()"
                 >
                   <nb-icon icon="arrow-back-outline"></nb-icon>
                 </button>
                 <button
-                  [status]="mode__Speed === 4 ? 'success' : 'primary'"
+                  [status]="mode__Speed === 4 ? 'success' : 'info'"
                   nbButton
                   (mousedown)="sendRequest(4)"
                   (mouseup)="clearRequest()"
@@ -74,7 +83,7 @@
               </div>
               <div class="button3">
                 <button
-                  [status]="mode__Speed === 2 ? 'success' : 'primary'"
+                  [status]="mode__Speed === 2 ? 'success' : 'info'"
                   style="margin-left: 3.3rem;"
                   nbButton
                   (mousedown)="sendRequest(2)"
@@ -85,19 +94,33 @@
               </div>
             </div>
           </div>
-          <div class="" style="display: flex; align-items: center;">
-            <nb-icon
-              style="font-size: 5rem;"
-              icon="gas__speed"
-              pack="social-networks"
-              (click)="sendResquestWithSpeed(1024)"
-            ></nb-icon>
-            <nb-icon
-              style="font-size: 5rem;"
-              icon="stop__speed"
-              pack="social-networks"
-              (click)="stop()"
-            ></nb-icon>
+          <div
+            class="action__button"
+            style="display: flex; align-items: center;"
+          >
+            <button nbButton status="info">
+              <nb-icon
+                icon="gas__speed"
+                pack="social-networks"
+                (click)="sendResquestWithSpeed(1024)"
+              ></nb-icon>
+            </button>
+
+            <button nbButton status="info">
+              <nb-icon
+                icon="stop__speed"
+                pack="social-networks"
+                (click)="stop()"
+              ></nb-icon>
+            </button>
+            <button
+              (click)="turnOnFlashTip()"
+              nbButton
+              status="info"
+              size="large"
+            >
+              <nb-icon icon="flash-outline"></nb-icon>
+            </button>
             <div
               [ngClass]="{ on: isFlash, off: !isFlash }"
               (click)="turnOnFlash()"
@@ -180,6 +203,7 @@
       <nb-card-footer>
         <div class="row">
           <div class="col-sm-6 col-md-6col-lg-6">
+            <h5>SPEED</h5>
             <div class="slider-container">
               <ngx-temperature-dragger
                 [(value)]="temperature"
@@ -191,6 +215,9 @@
                 [thumbBg]="theme.thumbBg"
                 [thumbBorderColor]="theme.thumbBorder"
                 (valueChange)="getNumberSpeed($event)"
+                (power)="getPower2($event)"
+                [type]="'speed'"
+                [mode__speed]="modeAuto"
               >
                 <div
                   class="slider-value-container"
@@ -207,6 +234,8 @@
             </div>
           </div>
           <div class="col-sm-6 col-md-6col-lg-6">
+            <h5>LIGHT</h5>
+
             <div class="slider-container">
               <ngx-temperature-dragger
                 [(value)]="humidity"
@@ -218,6 +247,9 @@
                 [thumbBg]="theme.thumbBg"
                 [thumbBorderColor]="theme.thumbBorder"
                 (valueChange)="getNumberLight($event)"
+                (power)="getPower($event)"
+                [type]="'light'"
+                [mode__speed]="modeAuto"
               >
                 <div
                   class="slider-value-container"

@@ -8,8 +8,10 @@ import {
   EventEmitter,
   AfterViewInit,
   OnChanges,
+  ChangeDetectorRef,
 } from "@angular/core";
 import { Location, LocationStrategy } from "@angular/common";
+import { SocketService } from "src/app/socket.service";
 
 let uniqueId = 0;
 const VIEW_BOX_SIZE = 300;
@@ -41,8 +43,9 @@ export class TemperatureDraggerComponent implements AfterViewInit, OnChanges {
   @Input() min = 0; // min output value
   @Input() max = 1024; // max output value
   @Input() step = 1;
-
+  @Input() type: string;
   @Output() power = new EventEmitter<boolean>();
+  @Input() mode__speed: boolean = false;
   isMouseMove: boolean = false;
   @HostListener("window:mouseup", ["$event"])
   onMouseUp(event) {
@@ -94,7 +97,9 @@ export class TemperatureDraggerComponent implements AfterViewInit, OnChanges {
 
   constructor(
     private location: Location,
-    private locationStrategy: LocationStrategy
+    private locationStrategy: LocationStrategy,
+    private cd: ChangeDetectorRef,
+    private socketService: SocketService
   ) {
     this.oldValue = this.value;
   }
@@ -121,17 +126,17 @@ export class TemperatureDraggerComponent implements AfterViewInit, OnChanges {
   }
 
   switchPower() {
-    this.off = !this.off;
-    this.power.emit(!this.off);
-
-    if (this.off) {
-      this.oldValue = this.value;
-      this.value = this.min;
-    } else {
-      this.value = this.oldValue;
+    if (this.mode__speed) {
+      this.off = !this.off;
+      this.power.emit(!this.off);
+      // if (this.off) {
+      //   this.oldValue = this.value;
+      //   this.value = this.min;
+      // } else {
+      //   this.value = this.oldValue;
+      // }
+      this.invalidatePinPosition();
     }
-
-    this.invalidatePinPosition();
   }
 
   getUrlPath(id: string) {
@@ -398,6 +403,11 @@ export class TemperatureDraggerComponent implements AfterViewInit, OnChanges {
         if (!this.isMouseMove && this.isMouseDown) {
         }
         this.value = value;
+        if (this.type === "light") {
+          this.socketService.$light.next(Math.round(value));
+        } else {
+          this.socketService.$speed.next(Math.round(value));
+        }
         this.invalidatePinPosition();
       }
     }
