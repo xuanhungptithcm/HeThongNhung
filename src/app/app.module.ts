@@ -25,6 +25,9 @@ import {
   NbCardModule,
 } from "@nebular/theme";
 import { NbEvaIconsModule } from "@nebular/eva-icons";
+import { ThemeModule } from "./theme.module";
+import { TemperatureDraggerComponent } from "./components/temperature-dragger/temperature-dragger.component";
+import { RoundPipe } from "./pipes/round.pipe";
 
 const config: SocketIoConfig = {
   url: "http://207.148.71.252:7050",
@@ -32,14 +35,13 @@ const config: SocketIoConfig = {
 };
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, TemperatureDraggerComponent, RoundPipe],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
     FormsModule,
-    NbThemeModule.forRoot(),
     NbEvaIconsModule,
     NbLayoutModule,
     NbMenuModule,
@@ -56,6 +58,7 @@ const config: SocketIoConfig = {
     NbCardModule,
     NbToggleModule,
     SocketIoModule.forRoot(config),
+    ThemeModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],

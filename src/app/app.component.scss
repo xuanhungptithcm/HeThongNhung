@@ -58,3 +58,187 @@ nb-icon {
     animation: move 2s linear infinite;
   }
 }
+
+@import "../styles.scss";
+
+@include nb-install-component() {
+  .item-uvd {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    svg {
+      width: 80%;
+      cursor: pointer;
+      fill: rgba(143, 155, 179, 0.24);
+    }
+  }
+
+  .st0 {
+    fill: none;
+    stroke: rgba(143, 155, 179, 0.24);
+    stroke-width: 13;
+    stroke-linecap: round;
+    stroke-miterlimit: 10;
+    transition: all 0.25s ease;
+  }
+  @for $i from 1 through 11 {
+    .on .st0:nth-child(#{$i}) {
+      transition-delay: $i * 0.2s;
+      stroke: nb-theme(text-basic-color);
+    }
+    .off .st0:nth-child(#{$i}) {
+      transition-delay: 2.2s - $i * 0.2s;
+      stroke: rgba(143, 155, 179, 0.24);
+    }
+  }
+  .on .color_light {
+    transition: all 0.25s ease;
+    transition-delay: 2s;
+    fill: nb-theme(text-basic-color);
+  }
+}
+svg {
+  cursor: pointer;
+  width: 80px;
+}
+
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+@include nb-install-component() {
+  nb-tabset {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    ::ng-deep ul {
+      // make same size as card header
+      border-color: transparent;
+      padding-bottom: 1px;
+      .tab-link {
+        padding: 1.25rem 2rem;
+      }
+    }
+  }
+
+  nb-tab.content-active {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    height: 100%;
+  }
+
+  .slider-container {
+    display: flex;
+    flex: 1;
+    -ms-flex: 1 1 auto;
+    justify-content: center;
+    align-items: center;
+  }
+
+  ngx-temperature-dragger {
+    margin-top: -1.5rem;
+    width: 100%;
+    max-width: 300px;
+  }
+  .color_UV {
+    fill: #f89300;
+  }
+  .slider-value-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .value {
+      position: relative;
+      margin: 0;
+
+      // &.temperature::before {
+      //   position: absolute;
+      //   content: "°";
+      //   top: 0;
+      //   right: -0.85rem;
+      // }
+
+      &.humidity::before {
+        position: absolute;
+        content: "";
+        top: 3px;
+        right: -1.6rem;
+        font-size: 0.7em;
+      }
+    }
+
+    &.off {
+      .value {
+        color: nb-theme(text-hint-color);
+        letter-spacing: 0.25rem;
+        padding-left: 0.5rem;
+
+        &::before {
+          display: none;
+        }
+      }
+
+      .desc {
+        display: none;
+      }
+    }
+  }
+
+  nb-radio-group {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  nb-radio {
+    flex: 0 0 auto;
+    width: calc(3.5rem + 2px);
+    height: calc(3.5rem + 2px);
+
+    ::ng-deep {
+      .outer-circle,
+      .inner-circle {
+        display: none;
+      }
+
+      label {
+        padding: 0;
+      }
+
+      .text {
+        border: 1px solid transparent;
+        font-size: 2.5rem;
+        padding: 0.5rem;
+        margin: 0;
+        color: nb-theme(text-hint-color);
+      }
+
+      input:checked ~ .text {
+        border-color: nb-theme(color-primary-default);
+        border-radius: nb-theme(card-border-radius);
+        color: nb-theme(text-primary-color);
+      }
+    }
+  }
+}
+@keyframes move {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 50px 50px;
+  }
+}
+.disabled {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #dddddd;
+  opacity: 0.5;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+}
