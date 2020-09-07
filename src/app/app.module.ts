@@ -5,7 +5,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { SocketIoModule, SocketIoConfig } from "ngx-socket-io";
+// import { SocketIoModule, SocketIoConfig } from "ngx-socket-io";
 
 import {
   NbActionsModule,
@@ -30,10 +30,10 @@ import { ThemeModule } from "./theme.module";
 import { TemperatureDraggerComponent } from "./components/temperature-dragger/temperature-dragger.component";
 import { RoundPipe } from "./pipes/round.pipe";
 
-const config: SocketIoConfig = {
-  url: "http://192.168.1.7:7050",
-  options: {},
-};
+// const config: SocketIoConfig = {
+//   url: "http://192.168.1.103:7050",
+//   options: {},
+// };
 
 // const config: SocketIoConfig = {
 //   url: "http://207.148.71.252:7050",
@@ -63,7 +63,7 @@ const config: SocketIoConfig = {
     NbInputModule,
     NbCardModule,
     NbToggleModule,
-    SocketIoModule.forRoot(config),
+    // SocketIoModule.forRoot(config),
     ThemeModule.forRoot(),
     NbSpinnerModule,
   ],

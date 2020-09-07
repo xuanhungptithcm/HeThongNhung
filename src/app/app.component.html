@@ -1,6 +1,8 @@
 <nb-layout windowMode>
   <nb-layout-column>
     <nb-card>
+      <canvas #canvas width="640" height="480"></canvas>
+
       <nb-card-header>
         <div class="auto__speed">
           <nb-toggle
@@ -13,10 +15,10 @@
       </nb-card-header>
       <nb-card-body
         nbSpinnerSize="giant"
-        [nbSpinner]="modeAuto"
+        [nbSpinner]="false"
         nbSpinnerStatus="info"
         nbSpinnerMessage="Đang ở chế độ dò line"
-        style="position: relative;"
+        style="position: relative"
       >
         <div></div>
         <div class="form">
@@ -47,14 +49,14 @@
         </div>
         <div
           class="row"
-          style="display: flex; justify-content: space-between; margin: 0 2rem;"
+          style="display: flex; justify-content: space-between; margin: 0 2rem"
         >
-          <div class="control__button" style="margin-bottom: 2rem;">
+          <div class="control__button" style="margin-bottom: 2rem">
             <div class="control">
               <div class="button1">
                 <button
                   [status]="mode__Speed === 1 ? 'success' : 'info'"
-                  style="margin-left: 3.3rem;"
+                  style="margin-left: 3.3rem"
                   nbButton
                   (mousedown)="sendRequest(1)"
                   (mouseup)="clearRequest()"
@@ -64,7 +66,7 @@
               </div>
               <div class="button2">
                 <button
-                  style="margin-right: 3rem;"
+                  style="margin-right: 3rem"
                   nbButton
                   [status]="mode__Speed === 3 ? 'success' : 'info'"
                   (mousedown)="sendRequest(3)"
@@ -84,7 +86,7 @@
               <div class="button3">
                 <button
                   [status]="mode__Speed === 2 ? 'success' : 'info'"
-                  style="margin-left: 3.3rem;"
+                  style="margin-left: 3.3rem"
                   nbButton
                   (mousedown)="sendRequest(2)"
                   (mouseup)="clearRequest()"
@@ -96,22 +98,35 @@
           </div>
           <div
             class="action__button"
-            style="display: flex; align-items: center;"
+            style="display: flex; align-items: center"
           >
-            <button nbButton status="info" size="large">
-              <nb-icon
-                icon="gas__speed"
-                pack="social-networks"
-                (click)="sendResquestWithSpeed(1024)"
-              ></nb-icon>
+            <button
+              (click)="roundRequest(6)"
+              nbButton
+              status="primary"
+              size="large"
+            >
+              <nb-icon icon="sync-outline"></nb-icon>
+            </button>
+            <button
+              (click)="roundRequest(7)"
+              nbButton
+              status="danger"
+              size="large"
+            >
+              <nb-icon icon="sync-outline"></nb-icon>
+            </button>
+            <button
+              (click)="sendResquestWithSpeed(1024)"
+              nbButton
+              status="success"
+              size="large"
+            >
+              <nb-icon icon="gas__speed" pack="social-networks"></nb-icon>
             </button>
 
-            <button nbButton status="info" size="large">
-              <nb-icon
-                icon="stop__speed"
-                pack="social-networks"
-                (click)="stop()"
-              ></nb-icon>
+            <button (click)="stop()" nbButton status="danger" size="large">
+              <nb-icon icon="stop__speed" pack="social-networks"></nb-icon>
             </button>
             <button
               (click)="turnOnFlashTip()"
@@ -132,7 +147,7 @@
                 x="0px"
                 y="0px"
                 viewBox="0 0 303.3 319.5"
-                style="enable-background: new 0 0 303.3 319.5;"
+                style="enable-background: new 0 0 303.3 319.5"
                 xml:space="preserve"
               >
                 <style type="text/css"></style>
@@ -207,7 +222,6 @@
             <div class="slider-container">
               <ngx-temperature-dragger
                 [(value)]="temperature"
-                [off]="!modeAuto"
                 [min]="temperatureData.min"
                 [max]="temperatureData.max"
                 [disableArcColor]="theme.arcEmpty"
@@ -226,9 +240,7 @@
                   <div class="value temperature h1">
                     {{ temperature | ngxRound }}
                   </div>
-                  <div class="desc">
-                    CD/cm2
-                  </div>
+                  <div class="desc">CD/cm2</div>
                 </div>
               </ngx-temperature-dragger>
             </div>
@@ -239,7 +251,6 @@
             <div class="slider-container">
               <ngx-temperature-dragger
                 [(value)]="humidity"
-                [off]="!modeAuto"
                 [min]="humidityData.min"
                 [max]="humidityData.max"
                 [disableArcColor]="theme.arcEmpty"
