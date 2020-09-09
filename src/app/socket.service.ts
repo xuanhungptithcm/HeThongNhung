@@ -35,7 +35,7 @@ export class SocketService {
   // }
   setupSocketConnection() {
     console.log("Khoi tạo socket");
-    this.socket = io("http://192.168.38.9:7050", {
+    this.socket = io("http://192.168.1.102:7050", {
       forceNew: true,
       autoConnect: true,
       reconnection: true,

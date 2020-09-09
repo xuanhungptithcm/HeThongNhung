@@ -40,7 +40,7 @@ let uniqueId = 0;
 export class AppComponent implements OnInit, AfterViewInit {
   private alive = true;
   title = "HeThongNhung";
-  speed: number = 700;
+  speed: number = 650;
   isClick: boolean = false;
   intervalRerequst: any;
   mode__Speed: number = 0;
@@ -85,6 +85,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   humidity: number;
   clearStart;
   isFirst = true;
+  isKeyDown = false;
   @ViewChild("canvas", { static: true })
   canvas: ElementRef<HTMLCanvasElement>;
   private ctx: CanvasRenderingContext2D;
@@ -212,26 +213,33 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   sendRequest(mode: number) {
     this.mode__Speed = mode;
-    clearInterval(this.intervalRerequst);
-    this.intervalRerequst = setInterval(() => {
+    this.isKeyDown = true;
+    console.log("loop");
+
+    if (this.isKeyDown) {
       let temp = this.speed + 20;
       if (temp >= 1024) {
         temp = 1024;
       } else {
-        temp += 20;
+        this.progress = Math.floor((temp / 1024) * 100);
+        this.speed = temp;
+        this.speedForm.setValue(temp);
+        this.socket.sendMessage({
+          control: mode,
+          speed: this.speed,
+        });
+        console.log({
+          control: mode,
+          speed: this.speed,
+        });
+        clearInterval(this.intervalRerequst);
+        this.intervalRerequst = setInterval(() => {
+          this.sendRequest(mode);
+        }, 350);
       }
-      this.progress = Math.floor((temp / 1024) * 100);
-      this.speed = temp;
-      this.speedForm.setValue(temp);
-      this.socket.sendMessage({
-        control: mode,
-        speed: this.speed,
-      });
-      console.log({
-        control: mode,
-        speed: this.speed,
-      });
-    }, 200);
+    } else {
+      clearInterval(this.intervalRerequst);
+    }
   }
   sendResquestWithSpeed(speed: any) {
     this.socket.changeMode("changeSpeed", {
@@ -266,9 +274,12 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   clearRequest() {
     console.log("clear " + this.speed);
+    this.isKeyDown = false;
+    clearInterval(this.intervalRerequst);
+
     if (this.modeAuto) {
       this.isClick = false;
-      this.speed = 800;
+      this.speed = 650;
       this.progress = 0;
       this.mode__Speed = 0;
       this.speedForm.setValue(0);
@@ -276,7 +287,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       // this.stop();
     } else {
       this.isClick = false;
-      this.speed = 800;
+      this.speed = 650;
       this.progress = 0;
       this.mode__Speed = 0;
       if (this.modeAuto) {
